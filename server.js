@@ -8,11 +8,11 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // 替换为你生成的 VAPID Keys
-const publicVapidKey = '你的Public Key';
-const privateVapidKey = '你的Private Key';
+const publicVapidKey = 'BI5DkSF_y2i7ePRetT3LgV3RqUmr81ULV6TZUJ4-3-lBQXKEMdg3IU5-aNyoAS24GMdgS_cquGM2XE73b2yPI8k';
+const privateVapidKey = 'hrBa8c94KaFk1-4-hSVFHOHTt4O09A_cbpK1rtkQ1zc';
 
 webpush.setVapidDetails(
-  'mailto:test@example.com',
+  'mailto:zhangxl19951027@163.com',
   publicVapidKey,
   privateVapidKey
 );
@@ -43,6 +43,10 @@ app.post('/sendNotification', async (req, res) => {
   });
 
   res.status(200).json({ message: '推送已发送' });
+});
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
 });
 
 app.listen(4000, () => console.log('服务启动：http://localhost:4000'));
