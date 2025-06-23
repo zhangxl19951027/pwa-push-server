@@ -6,11 +6,12 @@ const admin = require('firebase-admin');
 
 // 从.env文件中读取配置
 require('dotenv').config();
-const serviceAccount = JSON.parse(process.env.FCM_SERVICE_ACCOUNT);
+
+console.log('FCM_SERVICE_ACCOUNT:', process.env.FCM_SERVICE_ACCOUNT);
 
 // 初始化 Firebase Admin
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(JSON.parse(process.env.FCM_SERVICE_ACCOUNT))
 });
 
 const app = express();
@@ -64,7 +65,7 @@ app.post('/fcm_push', async (req, res) => {
   }
 
   const message = {
-    notification: { title, body, click_action: link },
+    notification: { title, body },
     webpush: {
       notification: { click_action: link },
       fcmOptions: { link }
