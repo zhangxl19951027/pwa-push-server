@@ -5,7 +5,9 @@ const cors = require('cors');
 const admin = require('firebase-admin');
 
 // 从.env文件中读取配置
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 console.log('FCM_SERVICE_ACCOUNT:', process.env, process.env.FCM_SERVICE_ACCOUNT);
 
