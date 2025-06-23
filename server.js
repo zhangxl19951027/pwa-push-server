@@ -2,6 +2,16 @@ const express = require('express');
 const webpush = require('web-push');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const admin = require('firebase-admin');
+
+// 从.env文件中读取配置
+require('dotenv').config();
+const serviceAccount = JSON.parse(process.env.FCM_SERVICE_ACCOUNT);
+
+// 初始化 Firebase Admin
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 const app = express();
 app.use(cors());
@@ -43,6 +53,34 @@ app.post('/sendNotification', async (req, res) => {
   });
 
   res.status(200).json({ message: '推送已发送' });
+});
+
+// 推送消息接口
+app.post('/fcm_push', async (req, res) => {
+  const { token, title, body, link = 'https://pwa-news-app.vercel.app/news/3' } = req.body;
+
+  if (!token || !title || !body || !link) {
+    return res.status(400).json({ error: '缺少必要参数' });
+  }
+
+  const message = {
+    notification: { title, body, click_action: link },
+    webpush: {
+      notification: { click_action: link },
+      fcmOptions: { link }
+    },
+    token
+  };
+
+  try {
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    const response = await admin.messaging().send(message);
+    console.log('推送成功:', response);
+    res.status(200).json({ message: '推送已发送', success: true, response });
+  } catch (error) {
+    console.error('推送失败:', error);
+    res.status(500).json({ success: false, error });
+  }
 });
 
 app.get('/', (req, res) => {
