@@ -16,9 +16,15 @@ console.log('All ENV keys:', Object.keys(process.env));
 
 console.log('FCM_SERVICE_ACCOUNT:', process.env.FCM_SERVICE_ACCOUNT);
 
+const serviceAccount = JSON.parse(process.env.FCM_SERVICE_ACCOUNT);
+
+if (process.env.NODE_ENV === 'production') {
+  serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+}
+
 // 初始化 Firebase Admin
 admin.initializeApp({
-  credential: admin.credential.cert(JSON.parse(process.env.FCM_SERVICE_ACCOUNT))
+  credential: admin.credential.cert(serviceAccount)
 });
 
 const app = express();
