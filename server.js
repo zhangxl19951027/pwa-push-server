@@ -12,7 +12,9 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-console.log('FCM_SERVICE_ACCOUNT:', process.env, process.env.FCM_SERVICE_ACCOUNT);
+console.log('All ENV keys:', Object.keys(process.env));
+
+console.log('FCM_SERVICE_ACCOUNT:', process.env.FCM_SERVICE_ACCOUNT);
 
 // 初始化 Firebase Admin
 admin.initializeApp({
