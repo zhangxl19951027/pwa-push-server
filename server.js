@@ -5,6 +5,9 @@ const cors = require('cors');
 const admin = require('firebase-admin');
 
 // 从.env文件中读取配置
+console.log('***************server start********');
+console.log('***************ENV********', process.env);
+console.log('***************Node_ENV********', process.env.NODE_ENV);
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
