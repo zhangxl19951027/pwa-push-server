@@ -97,6 +97,14 @@ app.post('/fcm_push', async (req, res) => {
   }
 });
 
+app.post('/collect', (req, res) => {
+  const { id } = req.body;
+  if (!id) return res.status(400).json({ error: '缺少参数' });
+  console.log('接收到收藏:', id);
+  // 处理业务逻辑（写数据库、统计）
+  res.status(200).json({ success: true });
+});
+
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
